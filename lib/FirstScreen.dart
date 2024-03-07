@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatelessWidget {
+  const FirstScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
+          const Positioned.fill(
             child: Center(
               child: Text(
                 'First Screen',
@@ -30,9 +32,11 @@ class FirstScreen extends StatelessWidget {
 }
 
 class FirstScreen_Previews extends StatelessWidget {
+  const FirstScreen_Previews({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
         body: FirstScreen(),
       ),

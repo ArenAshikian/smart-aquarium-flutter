@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class SecondScreen extends StatelessWidget {
+  const SecondScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         color: Colors.green[100], // Change the color to mint or any desired color
-        child: Center(
+        child: const Center(
           child: Text(
             'Second Screen',
             style: TextStyle(
@@ -21,9 +23,11 @@ class SecondScreen extends StatelessWidget {
 }
 
 class SecondScreen_Previews extends StatelessWidget {
+  const SecondScreen_Previews({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: Scaffold(
         body: SecondScreen(),
       ),

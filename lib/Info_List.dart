@@ -6,10 +6,10 @@ class MyTabBar extends StatelessWidget {
   final Tab selectedTab;
   final Function(Tab) onTabChanged;
 
-  MyTabBar({required this.selectedTab, required this.onTabChanged});
+  const MyTabBar({super.key, required this.selectedTab, required this.onTabChanged});
 
   String _getFillImage(Tab tab) {
-    return tab.toString().split('.').last + '.fill';
+    return '${tab.toString().split('.').last}.fill';
   }
 
   @override
@@ -49,7 +49,7 @@ class MyTabBar extends StatelessWidget {
 class MyTabBar_Previews extends StatelessWidget {
   final Tab selectedTab;
 
-  MyTabBar_Previews({required this.selectedTab});
+  const MyTabBar_Previews({super.key, required this.selectedTab});
 
   @override
   Widget build(BuildContext context) {

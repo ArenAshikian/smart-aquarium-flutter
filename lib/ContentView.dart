@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ContentView(),
   ));
 }
@@ -12,6 +14,8 @@ class AuthManager extends ChangeNotifier {
 }
 
 class ContentView extends StatefulWidget {
+  const ContentView({super.key});
+
   @override
   _ContentViewState createState() => _ContentViewState();
 }
@@ -41,9 +45,9 @@ class _ContentViewState extends State<ContentView> {
                   decoration: InputDecoration(
                     hintText: 'Name',
                     labelText: 'Login',
-                    labelStyle: TextStyle(color: Colors.blue),
+                    labelStyle: const TextStyle(color: Colors.blue),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
+                      borderSide: const BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
@@ -53,7 +57,7 @@ class _ContentViewState extends State<ContentView> {
                     });
                   },
                 ),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 Row(
                   children: [
                     Expanded(
@@ -62,9 +66,9 @@ class _ContentViewState extends State<ContentView> {
                         decoration: InputDecoration(
                           hintText: 'Password',
                           labelText: 'Password',
-                          labelStyle: TextStyle(color: Colors.red),
+                          labelStyle: const TextStyle(color: Colors.red),
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.red),
+                            borderSide: const BorderSide(color: Colors.red),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
@@ -86,7 +90,7 @@ class _ContentViewState extends State<ContentView> {
                     ),
                   ],
                 ),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 ElevatedButton(
   onPressed: isSignInButtonDisabled
       ? null
@@ -95,31 +99,141 @@ class _ContentViewState extends State<ContentView> {
             navigateToPagesView = true;
           });
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => PagesView(selectedTab: Tab.house,),
+            builder: (context) => const PagesView(selectedTab: Tab.house,),
           ));
         },
-  child: Text('Sign In'),
+  child: const Text('Sign In'),
 ),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Don't have an account?"),
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          navigateToSignUpView = true;
-                        });
-                      },
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                ),
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    const Text("Don't have an account?"),
+    TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SignUpView()),
+        );
+      },
+      child: const Text(
+        'Sign Up',
+        style: TextStyle(color: Colors.blue),
+      ),
+    ),
+  ],
+),
+
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SignUpView extends StatefulWidget {
+  const SignUpView({super.key});
+
+  @override
+  _SignUpViewState createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  String email = '';
+  String password = '';
+  String confirmPassword = '';
+
+  bool get isSignUpButtonDisabled =>
+      email.isEmpty || password.isEmpty || confirmPassword.isEmpty || password != confirmPassword;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign Up'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Spacer(),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: 'Username',
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.blue),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    email = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 15.0),
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.red),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    password = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 15.0),
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Confirm Password',
+                  border: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.red),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    confirmPassword = value;
+                  });
+                },
+              ),
+              const SizedBox(height: 15.0),
+              ElevatedButton(
+                onPressed: isSignUpButtonDisabled
+                    ? null
+                    : () {
+                        // Perform sign-up action here
+                        print("do sign-up action");
+
+                        // Show a toast message
+                        Fluttertoast.showToast(
+                          msg: 'Sign up successful!',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+
+                        // Navigate back to the login page
+                        Navigator.pop(context);
+                      },
+                child: const Text('Sign Up'),
+              ),
+              const Spacer(),
+            ],
           ),
         ),
       ),
@@ -133,7 +247,7 @@ enum Tab { house, message, person, car, trash }
 class PagesView extends StatefulWidget {
   final Tab selectedTab;
 
-  PagesView({required this.selectedTab});
+  const PagesView({super.key, required this.selectedTab});
 
   @override
   _PagesViewState createState() => _PagesViewState();
@@ -162,9 +276,9 @@ class _PagesViewState extends State<PagesView> with SingleTickerProviderStateMix
       body: Stack(
         children: [
           TabBarView(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             controller: _tabController,
-            children: [
+            children: const [
               FirstScreen(),
               SecondScreen(),
               ThirdScreen(),
@@ -193,13 +307,15 @@ class _PagesViewState extends State<PagesView> with SingleTickerProviderStateMix
 
 
 class FirstScreen extends StatelessWidget {
+  const FirstScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('First Screen'),
+        title: const Text('First Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'Welcome to the First Screen!',
           style: TextStyle(fontSize: 24),
@@ -211,14 +327,16 @@ class FirstScreen extends StatelessWidget {
 
 
 class SecondScreen extends StatelessWidget {
+  const SecondScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Disable the back arrow
-        title: Text('Second Screen'),
+        title: const Text('Second Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'Welcome to the Second Screen!',
           style: TextStyle(fontSize: 24),
@@ -229,14 +347,16 @@ class SecondScreen extends StatelessWidget {
 }
 
 class ThirdScreen extends StatelessWidget {
+  const ThirdScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Disable the back arrow
-        title: Text('Third Screen'),
+        title: const Text('Third Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'Welcome to the Third Screen!',
           style: TextStyle(fontSize: 24),
@@ -247,14 +367,16 @@ class ThirdScreen extends StatelessWidget {
 }
 
 class FourthScreen extends StatelessWidget {
+  const FourthScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Disable the back arrow
-        title: Text('Fourth Screen'),
+        title: const Text('Fourth Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'Welcome to the Fourth Screen!',
           style: TextStyle(fontSize: 24),
@@ -265,14 +387,16 @@ class FourthScreen extends StatelessWidget {
 }
 
 class FifthScreen extends StatelessWidget {
+  const FifthScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // Disable the back arrow
-        title: Text('Fifth Screen'),
+        title: const Text('Fifth Screen'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'Welcome to the Fifth Screen!',
           style: TextStyle(fontSize: 24),
@@ -286,7 +410,7 @@ class MyTabBar extends StatelessWidget {
   final Tab selectedTab;
   final ValueChanged<Tab> onTabChanged;
 
-  MyTabBar({required this.selectedTab, required this.onTabChanged});
+  const MyTabBar({super.key, required this.selectedTab, required this.onTabChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -295,27 +419,27 @@ class MyTabBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
             onPressed: () => onTabChanged(Tab.house),
             color: selectedTab == Tab.house ? Colors.blue : Colors.grey,
           ),
           IconButton(
-            icon: Icon(Icons.message),
+            icon: const Icon(Icons.message),
             onPressed: () => onTabChanged(Tab.message),
             color: selectedTab == Tab.message ? Colors.blue : Colors.grey,
           ),
           IconButton(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             onPressed: () => onTabChanged(Tab.person),
             color: selectedTab == Tab.person ? Colors.blue : Colors.grey,
           ),
           IconButton(
-            icon: Icon(Icons.directions_car),
+            icon: const Icon(Icons.directions_car),
             onPressed: () => onTabChanged(Tab.car),
             color: selectedTab == Tab.car ? Colors.blue : Colors.grey,
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () => onTabChanged(Tab.trash),
             color: selectedTab == Tab.trash ? Colors.blue : Colors.grey,
           ),

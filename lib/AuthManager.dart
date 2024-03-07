@@ -19,7 +19,7 @@ class AuthManager {
   // ... other properties
   
   Future<void> login(String name, String password, Function(bool) completion) async {
-    final loginEndpoint = 'https://yourapi.com/login'; // Replace with your actual API endpoint
+    const loginEndpoint = 'https://yourapi.com/login'; // Replace with your actual API endpoint
     
     try {
       final response = await http.post(
