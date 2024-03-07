@@ -21,7 +21,6 @@ class _ContentViewState extends State<ContentView> {
   String name = '';
   String password = '';
   bool showPassword = false;
-  bool logIn = false;
   bool navigateToPagesView = false;
   bool navigateToSignUpView = false;
 
@@ -76,7 +75,7 @@ class _ContentViewState extends State<ContentView> {
                         },
                       ),
                     ),
-                    IconButton(
+                    IconButton( // Added IconButton
                       icon: Icon(showPassword ? Icons.visibility_off : Icons.visibility),
                       color: Colors.red,
                       onPressed: () {
@@ -89,15 +88,18 @@ class _ContentViewState extends State<ContentView> {
                 ),
                 SizedBox(height: 15.0),
                 ElevatedButton(
-                  onPressed: isSignInButtonDisabled
-                      ? null
-                      : () {
-                          setState(() {
-                            navigateToPagesView = true;
-                          });
-                        },
-                  child: Text('Sign In'),
-                ),
+  onPressed: isSignInButtonDisabled
+      ? null
+      : () {
+          setState(() {
+            navigateToPagesView = true;
+          });
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PagesView(selectedTab: Tab.house,),
+          ));
+        },
+  child: Text('Sign In'),
+),
                 SizedBox(height: 15.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -125,15 +127,34 @@ class _ContentViewState extends State<ContentView> {
   }
 }
 
+
 enum Tab { house, message, person, car, trash }
 
 class PagesView extends StatefulWidget {
+  final Tab selectedTab;
+
+  PagesView({required this.selectedTab});
+
   @override
   _PagesViewState createState() => _PagesViewState();
 }
 
-class _PagesViewState extends State<PagesView> {
-  Tab selectedTab = Tab.house;
+
+class _PagesViewState extends State<PagesView> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: Tab.values.length, vsync: this);
+    _tabController.index = Tab.values.indexOf(widget.selectedTab);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +163,7 @@ class _PagesViewState extends State<PagesView> {
         children: [
           TabBarView(
             physics: NeverScrollableScrollPhysics(),
-            controller: TabController(length: Tab.values.length, vsync: this as TickerProvider),
+            controller: _tabController,
             children: [
               FirstScreen(),
               SecondScreen(),
@@ -154,10 +175,10 @@ class _PagesViewState extends State<PagesView> {
           Align(
             alignment: Alignment.bottomCenter,
             child: MyTabBar(
-              selectedTab: selectedTab,
+              selectedTab: widget.selectedTab,
               onTabChanged: (tab) {
                 setState(() {
-                  selectedTab = tab;
+                  _tabController.index = Tab.values.indexOf(tab);
                 });
               },
             ),
@@ -168,38 +189,96 @@ class _PagesViewState extends State<PagesView> {
   }
 }
 
+
+
+
 class FirstScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(); // Replace with your content
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the First Screen!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
   }
 }
+
 
 class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(); // Replace with your content
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Disable the back arrow
+        title: Text('Second Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the Second Screen!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
   }
 }
 
 class ThirdScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(); // Replace with your content
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Disable the back arrow
+        title: Text('Third Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the Third Screen!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
   }
 }
 
 class FourthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(); // Replace with your content
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Disable the back arrow
+        title: Text('Fourth Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the Fourth Screen!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
   }
 }
 
 class FifthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(); // Replace with your content
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false, // Disable the back arrow
+        title: Text('Fifth Screen'),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to the Fifth Screen!',
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
+    );
   }
 }
 
